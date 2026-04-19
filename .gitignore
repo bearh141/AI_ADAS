@@ -1,0 +1,93 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.log
+
+# --- Virtual environment ---
+venv/
+venv-ai-adas/
+env/
+ENV/
+.venv/
+.libs/
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- OS / System ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Data / Cache ---
+*.csv
+*.xlsx
+*.xls
+*.npy
+*.npz
+*.pkl
+*.tmp
+*.bak
+*.log
+*.cache/
+__pycache__/
+*.json
+
+# --- Output / Results ---
+runs/
+output/
+results/
+checkpoints/
+*.mp4
+*.jpg
+*.jpeg
+*.png
+
+# --- Environment & Config ---
+.env
+config.local.yaml
+config_dev.yaml
+config_prod.yaml
+
+# --- Build / Distribution ---
+build/
+dist/
+*.egg-info/
+*.spec
+
+# --- Test / Reports ---
+test/images/
+test/results/
+test/result/
+coverage/
+htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+
+# --- Notebook cache ---
+.ipynb_checkpoints/
+
+# --- Backup files ---
+*.bak
+*.swp
+*.swo
+*.orig
+
+# --- Datasets ---
+data/
+dataset/
+datasets/
+
+# --- Train ---
+train/
+yolov8n.pt
+test/test_ai_sign.py
