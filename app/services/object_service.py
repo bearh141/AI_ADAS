@@ -1,41 +1,35 @@
-import numpy as np
 from app.services.model_loader import get_model
+from app.utils.convert_classname import get_vietnamese_name
+from app.utils.run_predict import run_prediction
+from app.middleware.roi_filter import apply_roi, remap_detections
 
-def object_prediction(frame: np.ndarray, conf_threshold=None, iou_threshold=None):
-    """
-    Hàm xử lý dự đoán vật cản (Object Detection)
-    Input: Frame ảnh (OpenCV numpy array)
-    Output: List các object detect được
-    """
-    model_info = get_model("object")
-    model = model_info["model"]
+def object_prediction(frame):
+    try:
+        model_info = get_model("object")
 
-    conf_threshold = conf_threshold or model_info.get("conf", 0.40)
-    iou_threshold = iou_threshold or model_info.get("iou", 0.45)
+        # Giới hạn vùng nhận diện: vùng trung tâm phía trước
+        roi_frame, roi_meta = apply_roi(frame, "object")
 
-    results = model.predict(
-        source=frame,
-        conf=conf_threshold,
-        iou=iou_threshold,
-        verbose=False,
-        half=True,         
-        imgsz=640,         
-        max_det=20,         
-        agnostic_nms=True   
-    )[0]
+        results = run_prediction(model_info, roi_frame)
+        
+        detections = []
 
-    detections = []
-
-    if results.boxes:
         for box in results.boxes:
-            cls_id = int(box.cls[0])
             x1, y1, x2, y2 = box.xyxy[0].tolist()
-            
+            conf = float(box.conf[0])
+            cls_id = int(box.cls[0])
+
+            label = get_vietnamese_name(cls_id, model_type='object')
+
             detections.append({
-                "box": [int(x1), int(y1), int(x2), int(y2)],
-                "confidence": round(float(box.conf[0]), 2),
-                "class_id": cls_id,
-                "class_name": model.names[cls_id]
+                "bbox": [int(x1), int(y1), int(x2), int(y2)],
+                "label": label,
+                "confidence": round(conf, 2)
             })
-            
-    return detections
+
+        # Map tọa độ bbox về frame gốc
+        return remap_detections(detections, roi_meta, "object")
+
+    except Exception as e:
+        print(f"Error in object_prediction: {e}")
+        return []

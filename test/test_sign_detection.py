@@ -55,7 +55,7 @@ print(f"🖼️ Số ảnh cần test: {len(image_files)}")
 # 5️⃣ Chạy predict và lưu kết quả
 # =============================
 for idx, image_path in enumerate(image_files, start=1):
-    results = model.predict(source=image_path, conf=0.5, verbose=False)
+    results = model.predict(source=image_path, conf=0.45, iou=0.45,verbose=False)
     r = results[0]
 
     # Tên file gốc

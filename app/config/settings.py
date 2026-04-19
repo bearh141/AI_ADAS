@@ -7,6 +7,7 @@ class Settings:
 
         self.HOST = config["server"]["host"]
         self.PORT = config["server"]["port"]
+        self.GRPC_PORT = config["server"]["grpc_port"]
         self.MODELS = config["models"]
 
 settings = Settings()
